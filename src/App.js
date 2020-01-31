@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
+import AuthService from './services/AuthService';
+import Login from './components/commons/dialogs/Login';
+import UserNav from './components/commons/UserNav';
+import Home from './components/commons/Home';
+class App extends Component{
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  constructor(props){
+    super(props);
+    this.auth = new AuthService();
+    this.state = {auth: this.auth.isLoggedIn()};
+  }
+
+  render(){
+
+    if(this.state.auth){
+      return(<UserNav></UserNav>)
+    }
+    return(
+      <div className="main-container">
+        <userNav/>
+        
+    
+        <Router>
+
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/Login" component={Login}/>
+          </Switch>
+      </Router>
+      
+      </div>
+      
+    )
+  }
 }
 
 export default App;
